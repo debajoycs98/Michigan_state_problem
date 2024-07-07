@@ -1,7 +1,8 @@
 import numpy as np
 from diagonal_matrix import DiagonalMatrix
-from utils import create_matrix, create_Identity
+from utils import create_matrix, create_Identity, create_specialized 
 from scipy import linalg
+import copy
 
 class Matrix:
     """Matrix class nxn with each element be a diagonal matrix of dxd"""
@@ -14,8 +15,6 @@ class Matrix:
     def __repr__(self):
         return f'{self.matrix}'
     
-    def __getitem__(self, item):
-        return self.matrix[item]
     
     def __add__(self, other):
         """Add 2 matrices"""
@@ -37,6 +36,12 @@ class Matrix:
         else:
             raise TypeError('Subtraction operation is not compatible')
         
+    def __getitem__(self, item1):
+        return self.matrix[item1]
+    
+    def __setitem__(self, key, value):
+        self.matrix[key] = value
+        
     
     def __mul__(self, other):
         """
@@ -49,26 +54,32 @@ class Matrix:
         if isinstance(other, (int, float)):
             return Matrix(self.n, self.d, self.matrix * other)
         
-    def inverse(self):
+    @staticmethod    
+    def inverse(n,d,m):
         """Returns the inverse of the matrix using Gauss Jordon from scratch"""
-        I = create_Identity(self.n,self.d)
-        for i in range(self.n):
-            for diag in range(self.d):
-                pivot = self.matrix[i,i][diag]
-                if pivot == 0:
-                    raise ZeroDivisionError('Pivot is 0')
-                else:
-                    self.matrix[i,:][diag] = self.matrix[i,:][diag] / pivot
-                    I[i,:][diag] = I[i,:][diag] / pivot
-                    for j in range(self.n):
-                        if i == j:
-                            continue
-                        temp = self.matrix[j,i][diag]/pivot
-                       
-                        self.matrix[j,:][diag] = self.matrix[j,:][diag] - temp*self.matrix[i,:][diag]
-                        I[j,:][diag] = I[j,:][diag] - temp* I[i,:][diag]
+        matrix = copy.deepcopy(m)
+        I = Matrix(2,2,create_Identity(2, 2))
 
-        return Matrix(self.n,self.d,I)
+        if (type(matrix)!=type(I)):
+            raise TypeError("The two matrices are not of the same type")
+        
+        for i in range(n):
+            pivot = matrix[i,i]
+            if pivot.det() == 0:
+                raise ZeroDivisionError('Pivot is 0')
+            else:
+                for j in range(n):
+                    matrix[i,j] = matrix[i,j] * pivot.invert()
+                    I[i,j] = I[i,j] * pivot.invert()
+                for j in range(n):
+                    if i == j:
+                        continue
+                    temp = matrix[j,i]
+                    for k in range(n):
+                        matrix[j,k] = matrix[j,k] - matrix[i,k]*temp
+                        I[j,k]= I[j,k] - I[i,k]*temp
+                        
+        return I
 
             
 
@@ -76,12 +87,14 @@ class Matrix:
 
 if __name__ == '__main__':
     m = Matrix(2, 2, create_matrix(2, 2))
-    print("The matrix m is",m)
+    # print("The matrix m is",m)
     I = Matrix(2,2,create_Identity(2, 2))
     # print(m*I)
     # print((m*m))
     # print(m*2)
-    A= m.inverse()
+    A= Matrix.inverse(2,2,m)
+    print(m.matrix.shape)
+    print(A.matrix.shape)
     print("The identity matrix is",A*m)
 
     
