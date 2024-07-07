@@ -51,17 +51,37 @@ class Matrix:
         
     def inverse(self):
         """Returns the inverse of the matrix using Gauss Jordon from scratch"""
-        
+        I = create_Identity(self.n,self.d)
+        for i in range(self.n):
+            for diag in range(self.d):
+                pivot = self.matrix[i,i][diag]
+                if pivot == 0:
+                    raise ZeroDivisionError('Pivot is 0')
+                else:
+                    self.matrix[i,:][diag] = self.matrix[i,:][diag] / pivot
+                    I[i,:][diag] = I[i,:][diag] / pivot
+                    for j in range(self.n):
+                        if i == j:
+                            continue
+                        temp = self.matrix[j,i][diag]/pivot
+                       
+                        self.matrix[j,:][diag] = self.matrix[j,:][diag] - temp*self.matrix[i,:][diag]
+                        I[j,:][diag] = I[j,:][diag] - temp* I[i,:][diag]
+
+        return Matrix(self.n,self.d,I)
+
             
 
     
 
 if __name__ == '__main__':
     m = Matrix(2, 2, create_matrix(2, 2))
-    print(m)
-    print((m*m))
-    print(m*2)
+    print("The matrix m is",m)
+    I = Matrix(2,2,create_Identity(2, 2))
+    # print(m*I)
+    # print((m*m))
+    # print(m*2)
     A= m.inverse()
-    print(A*m)
+    print("The identity matrix is",A*m)
 
     

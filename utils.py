@@ -1,6 +1,7 @@
 import numpy as np
 from diagonal_matrix import DiagonalMatrix
 
+
 def create_matrix(n,d):
     """ Creates a matrix of size nxn where each element is diagonal matrix of dxd"""
     return np.array([[DiagonalMatrix(np.diag(np.random.rand((d)))) for _ in range(n)]for _ in range(n)])
