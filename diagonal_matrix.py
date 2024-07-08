@@ -5,6 +5,8 @@ class DiagonalMatrix:
     """A diagonal matrix modeled as a vector of diagonal entries"""
     def __init__(self, matrix):
         self.d = matrix.shape[0]
+        #make all elements less than 1e-8 --> 0 in matrix
+        matrix = np.where(np.abs(matrix) < 1e-8, 0, matrix)
         if len(matrix.shape)>1:self.data = np.diag(matrix).copy()
         else: self.data = matrix.copy()
         

@@ -58,7 +58,7 @@ class Matrix:
     def inverse(n,d,m):
         """Returns the inverse of the matrix using Gauss Jordon from scratch"""
         matrix = copy.deepcopy(m)
-        I = Matrix(2,2,create_Identity(2, 2))
+        I = Matrix(2,2,create_Identity(n, d))
 
         if (type(matrix)!=type(I)):
             raise TypeError("The two matrices are not of the same type")
@@ -78,7 +78,7 @@ class Matrix:
                     for k in range(n):
                         matrix[j,k] = matrix[j,k] - matrix[i,k]*temp
                         I[j,k]= I[j,k] - I[i,k]*temp
-                        
+        print("The inverse matrix is", I.matrix.shape)
         return I
 
             
@@ -86,13 +86,15 @@ class Matrix:
     
 
 if __name__ == '__main__':
-    m = Matrix(2, 2, create_matrix(2, 2))
+    n = 4
+    d = 3
+    m = Matrix(n, d, create_matrix(n, d))
     # print("The matrix m is",m)
-    I = Matrix(2,2,create_Identity(2, 2))
-    # print(m*I)
-    # print((m*m))
-    # print(m*2)
-    A= Matrix.inverse(2,2,m)
+    I = Matrix(n,d,create_Identity(n, d))
+    print(m*I)
+    print((m*m))
+    print(m*2)
+    A= Matrix.inverse(n,d,m)
     print(m.matrix.shape)
     print(A.matrix.shape)
     print("The identity matrix is",A*m)
