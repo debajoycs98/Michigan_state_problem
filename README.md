@@ -1,5 +1,4 @@
 # Michigan_state_problem
-
 The problem is given a nxd x nxd structured matrix where every non overlapping dxd element is a diagonal matrix. 
 
 The purpose of this repo is to solve this problem using matrix data structure.

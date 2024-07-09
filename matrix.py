@@ -96,14 +96,24 @@ if __name__ == '__main__':
     argparser.add_argument('-d', type=int, default=2, help='Dimension of the diagonal matrix')
     argparser = argparser.parse_args()
 
-    mat = np.array([[1,0,1,0],[0,1,0,2],[2,0,3,0],[0,4,0,3]])
+    
+    m1 = create_matrix(argparser.n, argparser.d)
 
-    mat = convert_to_block_diagonal_matrix(mat, 2)
+    print("The matrix is", m1)
 
-    m = Matrix(argparser.n, argparser.d, mat)
+    m1 = Matrix(argparser.n, argparser.d, m1)
 
-    print((m*m)) # Matrix Multiplication
+    m2 = create_matrix(argparser.n, argparser.d)
 
-    A= Matrix.inverse(argparser.n,argparser.d,m) # Matrix Inverse
+    print("The matrix is", m2)
+
+    m2 = Matrix(argparser.n, argparser.d, m2)
+
+
+    print("The result of matrix multiplication",(m1*m2)) # Matrix Multiplication
+
+    A= Matrix.inverse(argparser.n,argparser.d,m1) # Matrix Inverse
 
     print("The Computed inverse is",A.matrix)
+
+    print("Identity matrix should be", A*m1)
