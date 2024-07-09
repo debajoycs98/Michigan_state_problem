@@ -99,21 +99,20 @@ if __name__ == '__main__':
     
     m1 = create_matrix(argparser.n, argparser.d)
 
-    print("The matrix is", m1)
+    print("The matrix m1 is", m1)
 
     m1 = Matrix(argparser.n, argparser.d, m1)
 
     m2 = create_matrix(argparser.n, argparser.d)
 
-    print("The matrix is", m2)
+    print("The matrix m2 is", m2)
 
     m2 = Matrix(argparser.n, argparser.d, m2)
 
-
-    print("The result of matrix multiplication",(m1*m2)) # Matrix Multiplication
+    print("The result of matrix multiplication m1 * m2",(m1*m2)) # Matrix Multiplication
 
     A= Matrix.inverse(argparser.n,argparser.d,m1) # Matrix Inverse
 
-    print("The Computed inverse is",A.matrix)
+    print("The Computed inverse of m1 is",A.matrix)
 
     print("Identity matrix should be", A*m1)
