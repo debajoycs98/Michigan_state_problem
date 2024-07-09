@@ -56,6 +56,12 @@ class Matrix:
         if isinstance(other, (int, float)):
             return Matrix(self.n, self.d, self.matrix * other)
         
+    def transpose(self):
+        """Returns the transpose of the matrix"""
+        matrix = copy.deepcopy(self.matrix)
+
+        return Matrix(self.n, self.d, matrix.T)
+        
     @staticmethod    
     def inverse(n,d,m):
         """Returns the inverse of the matrix using Gauss Jordon from scratch"""
@@ -68,8 +74,15 @@ class Matrix:
         for i in range(n):
             pivot = matrix[i,i]
             if pivot.det() == 0:
-                #TODO:Allow row exchanges to see if that is possible to make the matrix invertible
-                raise ZeroDivisionError('Pivot is 0')
+                
+                for m in range(i+1, n):
+                    if matrix[m,i].det() != 0:
+                        for j in range(n):
+                            matrix[i,j], matrix[m,j] = matrix[m,j], matrix[i,j]
+                            I[i,j], I[m,j] = I[m,j], I[i,j]
+                        pivot = matrix[i,i]
+                        break
+                if pivot.det()==0:raise ZeroDivisionError('Pivot is 0')
             else:
                 for j in range(n):
                     matrix[i,j] = matrix[i,j] * pivot.invert()
@@ -81,8 +94,11 @@ class Matrix:
                     for k in range(n):
                         matrix[j,k] = matrix[j,k] - matrix[i,k]*temp
                         I[j,k]= I[j,k] - I[i,k]*temp
-        
-        return I
+        print("The Identity matrix is", matrix)
+        print("The transpose matrix is", matrix.transpose())
+
+        # breakpoint()
+        return I* matrix.transpose()
 
             
 
@@ -116,3 +132,16 @@ if __name__ == '__main__':
     print("The Computed inverse of m1 is",A.matrix)
 
     print("Identity matrix should be", A*m1)
+
+    #Check if the row exchanges are allowed
+    mat = np.array([[0, 1], [1, 1]])
+
+    print("The inverse of the matrix", mat, "is", linalg.inv(mat))
+
+    mat = Matrix(2,1,convert_to_block_diagonal_matrix(mat, 2))
+
+    rat = Matrix.inverse(2, 1, mat) 
+
+    print("The inverse of the matrix", mat, "is", rat)
+
+    
