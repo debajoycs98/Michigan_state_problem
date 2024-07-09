@@ -9,19 +9,5 @@ elementary operations of a diagonal matrix and use them such that they are effic
 
 Basic Steps:
 
-n = 2
 
-d = 2
-
-mat = np.array([[1,0,1,0],[0,1,0,2],[2,0,3,0],[0,4,0,3]])
-
-mat = convert_to_block_diagonal_matrix(mat, 2)
-
-m = Matrix(n, d, mat)
-
-print((m*m)) # Matrix Multiplication
-
-A= Matrix.inverse(n,d,m) # Matrix Inverse
-
-print("The Computed inverse is",A.matrix)
-
+<img width="706" alt="Screenshot 2024-07-09 at 12 08 53 AM" src="https://github.com/debajoycs98/Michigan_state_problem/assets/157600070/73661545-f46b-4379-8159-2fcd11f933d8">
