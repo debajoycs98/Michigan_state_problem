@@ -89,10 +89,9 @@ class Matrix:
 
 if __name__ == '__main__':
     n = 2
-    d = 1
-    mat = np.array([[0,1],[1,1]])
+    d = 2
+    mat = np.array([[1,0,1,0],[0,1,0,2],[2,0,3,0],[0,4,0,3]])
     print("The matrix inverse is", linalg.inv(mat))
-    mat = np.array(mat)
     print(mat.shape)
     mat = convert_to_block_diagonal_matrix(mat, 2)
     m = Matrix(n, d, mat)
@@ -106,7 +105,7 @@ if __name__ == '__main__':
     end = time.time()
     print("The time taken to compute the inverse by efficient matrix is", end-start)
     print(m.matrix.shape)
-    print(A.matrix.shape)
+    print("The Computed inverse is",A.matrix)
     print("The identity matrix is",A*m)
 
     
