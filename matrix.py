@@ -1,8 +1,9 @@
 import numpy as np
 from diagonal_matrix import DiagonalMatrix
-from utils import create_matrix, create_Identity, create_specialized 
+from utils import create_matrix, create_Identity, create_specialized, convert_to_block_diagonal_matrix
 from scipy import linalg
 import copy
+import time
 
 class Matrix:
     """Matrix class nxn with each element be a diagonal matrix of dxd"""
@@ -58,7 +59,7 @@ class Matrix:
     def inverse(n,d,m):
         """Returns the inverse of the matrix using Gauss Jordon from scratch"""
         matrix = copy.deepcopy(m)
-        I = Matrix(2,2,create_Identity(n, d))
+        I = Matrix(n,d,create_Identity(n, d))
 
         if (type(matrix)!=type(I)):
             raise TypeError("The two matrices are not of the same type")
@@ -66,6 +67,7 @@ class Matrix:
         for i in range(n):
             pivot = matrix[i,i]
             if pivot.det() == 0:
+                #TODO:Allow row exchanges to see if that is possible to make the matrix invertible
                 raise ZeroDivisionError('Pivot is 0')
             else:
                 for j in range(n):
@@ -78,7 +80,7 @@ class Matrix:
                     for k in range(n):
                         matrix[j,k] = matrix[j,k] - matrix[i,k]*temp
                         I[j,k]= I[j,k] - I[i,k]*temp
-        print("The inverse matrix is", I.matrix.shape)
+        
         return I
 
             
@@ -86,15 +88,23 @@ class Matrix:
     
 
 if __name__ == '__main__':
-    n = 4
-    d = 3
-    m = Matrix(n, d, create_matrix(n, d))
+    n = 2
+    d = 1
+    mat = np.array([[0,1],[1,1]])
+    print("The matrix inverse is", linalg.inv(mat))
+    mat = np.array(mat)
+    print(mat.shape)
+    mat = convert_to_block_diagonal_matrix(mat, 2)
+    m = Matrix(n, d, mat)
     # print("The matrix m is",m)
     I = Matrix(n,d,create_Identity(n, d))
     print(m*I)
     print((m*m))
     print(m*2)
+    start = time.time()
     A= Matrix.inverse(n,d,m)
+    end = time.time()
+    print("The time taken to compute the inverse by efficient matrix is", end-start)
     print(m.matrix.shape)
     print(A.matrix.shape)
     print("The identity matrix is",A*m)

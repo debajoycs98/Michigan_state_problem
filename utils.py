@@ -53,9 +53,9 @@ def convert_to_block_diagonal_matrix(matrix, n):
 
 if __name__=='__main__':
     
-    mat = [[1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]
+    mat = [[0,1],[1,1]]
     mat = np.array(mat)
     print(mat.shape)
     mat = convert_to_block_diagonal_matrix(mat, 2)
     print(mat)
-    print(create_Identity(2, 2))
+    print(create_Identity(2, 1))
