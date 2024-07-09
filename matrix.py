@@ -4,6 +4,7 @@ from utils import create_matrix, create_Identity, create_specialized, convert_to
 from scipy import linalg
 import copy
 import time
+import argparse
 
 class Matrix:
     """Matrix class nxn with each element be a diagonal matrix of dxd"""
@@ -88,24 +89,21 @@ class Matrix:
     
 
 if __name__ == '__main__':
-    n = 2
-    d = 2
-    mat = np.array([[1,0,1,0],[0,1,0,2],[2,0,3,0],[0,4,0,3]])
-    print("The matrix inverse is", linalg.inv(mat))
-    print(mat.shape)
-    mat = convert_to_block_diagonal_matrix(mat, 2)
-    m = Matrix(n, d, mat)
-    # print("The matrix m is",m)
-    I = Matrix(n,d,create_Identity(n, d))
-    print(m*I)
-    print((m*m))
-    print(m*2)
-    start = time.time()
-    A= Matrix.inverse(n,d,m)
-    end = time.time()
-    print("The time taken to compute the inverse by efficient matrix is", end-start)
-    print(m.matrix.shape)
-    print("The Computed inverse is",A.matrix)
-    print("The identity matrix is",A*m)
-
     
+
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('-n', type=int, default=2, help='Dimension of the matrix')
+    argparser.add_argument('-d', type=int, default=2, help='Dimension of the diagonal matrix')
+    argparser = argparser.parse_args()
+
+    mat = np.array([[1,0,1,0],[0,1,0,2],[2,0,3,0],[0,4,0,3]])
+
+    mat = convert_to_block_diagonal_matrix(mat, 2)
+
+    m = Matrix(argparser.n, argparser.d, mat)
+
+    print((m*m)) # Matrix Multiplication
+
+    A= Matrix.inverse(argparser.n,argparser.d,m) # Matrix Inverse
+
+    print("The Computed inverse is",A.matrix)
